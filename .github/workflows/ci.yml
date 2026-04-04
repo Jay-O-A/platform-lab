@@ -1,0 +1,35 @@
+name: Platform CI
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Nix
+        uses: cachix/install-nix-action@v20
+
+      - name: Enter Nix shell
+        run: nix develop --command echo "Nix ready"
+
+      - name: Build Docker image
+        run: docker build -t platform-app .
+
+      - name: Run tests (fast feedback)
+        run: |
+          npm ci
+          npm test
+
+      - name: Tag image
+        run: docker tag platform-app platform-app:${{ github.sha }}
+
+      - name: Lint
+        run: |
+          cd app
+          npx eslint . || true
