@@ -1,4 +1,3 @@
-```markdown
 # Platform Lab
 
 A lightweight Node.js development laboratory with containerized deployments and reproducible environment setup.
