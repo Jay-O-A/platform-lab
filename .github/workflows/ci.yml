@@ -31,5 +31,4 @@ jobs:
 
       - name: Lint
         run: |
-          cd app
           npx eslint . || true
